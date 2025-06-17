@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Asistencia - {{ curso.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestionar Asistencia para {{ curso.nombre }}</h1>
+        <a href="{{ url_for('docente_bp.docente_dashboard') }}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+
+    <hr>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Curso: {{ curso.nombre }}</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Fecha Actual:</strong> {{ fecha_actual.strftime('%d-%m-%Y') }}</p>
+            
+            <div class="mb-3">
+                <label for="fecha_asistencia" class="form-label">Seleccionar Fecha:</label>
+                <input type="date" class="form-control" id="fecha_asistencia" name="fecha_general" value="{{ fecha_actual.strftime('%Y-%m-%d') }}">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Estado de Asistencia</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estudiante in estudiantes %}
+                        <tr>
+                            <td>{{ estudiante.nombres }} {{ estudiante.apellidos }} ({{ estudiante.username }})</td>
+                            <td>
+                                {% if estudiante.asistencia_hoy == True %}
+                                    <span class="badge bg-success">Presente</span>
+                                {% elif estudiante.asistencia_hoy == False %}
+                                    <span class="badge bg-danger">Ausente</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">No Registrada</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form action="{{ url_for('docente_bp.gestionar_asistencia') }}" method="POST" class="d-flex justify-content-center">
+                                    <input type="hidden" name="estudiante_username" value="{{ estudiante.username }}">
+                                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                                    <input type="hidden" name="fecha" value="{{ fecha_actual.strftime('%Y-%m-%d') }}"> {# O usar un campo JS para tomar el valor del selector de fecha general #}
+                                    
+                                    <div class="form-check form-check-inline me-2">
+                                        <input class="form-check-input" type="radio" name="presente" id="presente_{{ estudiante.username }}" value="True" required
+                                            {% if estudiante.asistencia_hoy == True %}checked{% endif %}>
+                                        <label class="form-check-label" for="presente_{{ estudiante.username }}">Presente</label>
+                                    </div>
+                                    <div class="form-check form-check-inline me-3">
+                                        <input class="form-check-input" type="radio" name="presente" id="ausente_{{ estudiante.username }}" value="False" required
+                                            {% if estudiante.asistencia_hoy == False %}checked{% endif %}>
+                                        <label class="form-check-label" for="ausente_{{ estudiante.username }}">Ausente</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

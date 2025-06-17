@@ -1,0 +1,8 @@
+===== C:\Users\Carlos\Desktop\sistema_gestion_escolar\requirements.txt ===== 
+flask
+mysql-connector-python
+===== C:\Users\Carlos\Desktop\sistema_gestion_escolar\resultado.txt ===== 
+===== C:\Users\Carlos\Desktop\sistema_gestion_escolar\requirements.txt ===== 
+flask
+mysql-connector-python
+===== C:\Users\Carlos\Desktop\sistema_gestion_escolar\resultado.txt ===== 

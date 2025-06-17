@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-YWQBLZHMPP"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-YWQBLZHMPP");
+    </script>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <link rel="icon" type="image/svg+xml" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAADJklEQVRYhcVXXUgUURT+Zmb/dHfV1h/USh+sxNQVoh4CKcpEy6ywfKlMewgWpHo1o3qqoB/qoRAqCDOJsqgI7M0iysIswQzSBw0VE3/W9WfXXWdnbswsjWIzszO64gcXzp397jnfnrn3njMUIYRgFUGvZnABhqUsIiyLYOcvcZDJGdApiTBuyQGzIR2gKJET7O4FmfGJtjEvCzAwsr70vQKeh6+uEd6aa6L9n7MEB2Ibb8GYvxUTBccR/NIhPo8faAXtiJV1qTkDwr/27KlAsP2HMmfMDU9RJaJrXMCsX5NfzRnwlJ4C29IqzS0Vh2A5WQ56TSy434PwXr6rKE4tAyAaMPehjYxEbw4New5hu7plF/nqHs/zFgxu3KMYRNMpmDl3XbJjHt2EIXuTLC/KdQymg4VaXEoIL4ANItjxU5qa9+9WpVsvnYmsAOIPSDYlvEeD+r5lUpIiKwDG+YDEMy1sGlU68foiK4CymEE54kITnkewp0+V729qjqwAAdaLpyV76kg1SGBOlsf1DcBbeyPyAixVh6UscL39cOcUgf38PSSE50GmvZhteAl33r6wr2gxNF9EXP8Q3M5igOXCcpnsjWKN4Af/iHO1i0hzNWTSUhHf8w5MVoYqz3L0AByfnoNel6zJr65qSCfFw/H1NdhvXfA/bELgTQuI2wMmIw3m8hJYKsvArE/R41JnNdSBsfR8kLEJcUHCcBsou1V28ZL6AVVwPHx36qXgVIwNlC1acYUmAcTnh7/+BWbvPwXX06trp9vvXZGalCUJYNs74Sk8AcyxmoP+Q9TZKphLC1Q5qntAPPNOnWeboWEq2QVrbTUMuZlh6aoZmCxzScFNRTtgf3BVbEAA5ZSq/SRLV8oA75nC+NrtIVJcDBL6PwKMfGO5HCheRGTULdnC+V6J4AKUb8IFZZgfHl2R4KoC6OREyQ48a14xEaqnYNp1Hv6GV6GJxQzb7QswbnOCovV9UNFpqWJfoVuA0I65c4vBD43oCrgYce+fiMJlxaktFFQ7Ot/CtHfnsgSoxtBajISmgxsYApkU+kJ9QQzOTFA2+WK0up/nAP4CvN2UKcaA9wsAAAAASUVORK5CYII=" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grupo Ciencias</title>
+    <script type="module" crossorigin src="/assets/index-a2604a9e.js"></script>
+    <link rel="stylesheet" href="/assets/index-60112ed9.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- <script
+      src="https://cdn.pulse.is/livechat/loader.js"
+      data-live-chat-id="65a6e26677f2ba79590e3cd5"
+      async
+    ></script> -->
+    <liveconnect-widget
+      canal-key="cnfb9b36b804e70ea3f20c53923eebcb3d"
+    ></liveconnect-widget>
+    <script
+      type="text/javascript"
+      src="https://liveconnect.chat/es/CDN/liveconnect/liveconnect-widget.js"
+    ></script>
+    
+  </body>
+</html>

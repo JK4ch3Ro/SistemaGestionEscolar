@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de {{ curso.nombre }}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .form-inline-note, .form-inline-attendance {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Espacio entre elementos */
+            flex-wrap: nowrap; /* Evita que los elementos salten de línea */
+        }
+        .form-inline-note input[type="number"] {
+            width: 70px; /* Ancho para el campo de nota */
+        }
+        .form-inline-attendance .form-check-input {
+            margin-right: 0px;
+        }
+        .form-inline-attendance .form-check-label {
+            margin-left: 2px;
+        }
+        /* Para que el icono de guardar sea visible */
+        .btn-sm i {
+            vertical-align: middle;
+        }
+        /* Para que el desplazamiento al ancla sea suave */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión Detallada del Curso: {{ curso.nombre }}</h1>
+        <a href="{{ url_for('docente_bp.docente_dashboard') }}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+
+    <hr>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Estudiantes de {{ curso.nombre }}</h4>
+        </div>
+        <div class="card-body">
+            {% if estudiantes %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mt-3 align-middle">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Grado y Sección</th>
+                            {% for b in range(1, 4) %} {# Asumiendo 3 bimestres #}
+                            <th>Nota B{{ b }}</th>
+                            {% endfor %}
+                            {% for fecha_asist in fechas_asistencia %}
+                            <th>Asist. {{ fecha_asist.strftime('%d-%m') }}</th> {# Muestra solo día y mes #}
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estudiante in estudiantes %}
+                        <tr id="estudiante-{{ estudiante.username }}"> {# Ancla para el scroll #}
+                            <td>{{ estudiante.nombres }} {{ estudiante.apellidos }}<br><small class="text-muted">({{ estudiante.username }})</small></td>
+                            <td>{{ estudiante.grado_nombre }} "{{ estudiante.seccion_nombre }}"</td>
+                            
+                            {% for b in range(1, 4) %}
+                            <td>
+                                <form action="{{ url_for('docente_bp.gestionar_nota') }}" method="POST" class="form-inline-note">
+                                    <input type="hidden" name="estudiante_username" value="{{ estudiante.username }}">
+                                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                                    <input type="hidden" name="bimestre" value="{{ b }}">
+                                    <input type="number" name="valor" step="0.1" min="0" max="20" class="form-control form-control-sm"
+                                           value="{{ estudiante.notas.get(b, '') }}">
+                                    <button type="submit" class="btn btn-sm btn-success" title="Guardar Nota">
+                                        <i class="bi bi-save"></i> </button>
+                                </form>
+                            </td>
+                            {% endfor %}
+                            
+                            {% for fecha_asist in fechas_asistencia %}
+                            <td>
+                                <form action="{{ url_for('docente_bp.gestionar_asistencia') }}" method="POST" class="form-inline-attendance">
+                                    <input type="hidden" name="estudiante_username" value="{{ estudiante.username }}">
+                                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                                    <input type="hidden" name="fecha" value="{{ fecha_asist.strftime('%Y-%m-%d') }}">
+                                    
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="presente" id="p_{{ estudiante.username }}_{{ curso.id }}_{{ fecha_asist.strftime('%Y%m%d') }}" value="True" required
+                                            {% if estudiante.asistencia_fechas.get(fecha_asist.strftime('%Y-%m-%d')) == True %}checked{% endif %}>
+                                        <label class="form-check-label" for="p_{{ estudiante.username }}_{{ curso.id }}_{{ fecha_asist.strftime('%Y%m%d') }}">P</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="presente" id="a_{{ estudiante.username }}_{{ curso.id }}_{{ fecha_asist.strftime('%Y%m%d') }}" value="False" required
+                                            {% if estudiante.asistencia_fechas.get(fecha_asist.strftime('%Y-%m-%d')) == False %}checked{% endif %}>
+                                        <label class="form-check-label" for="a_{{ estudiante.username }}_{{ curso.id }}_{{ fecha_asist.strftime('%Y%m%d') }}">A</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-warning" title="Registrar Asistencia">
+                                        <i class="bi bi-check-circle"></i> </button>
+                                </form>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">No hay estudiantes matriculados en este curso aún.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Desplazar a un estudiante específico si el _anchor está presente
+            const urlParams = new URLSearchParams(window.location.search);
+            const anchor = urlParams.get('_anchor'); // Esto será 'estudiante-username'
+
+            if (anchor) {
+                const studentRow = document.getElementById(anchor);
+                if (studentRow) {
+                    studentRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Opcional: Resaltar la fila temporalmente
+                    studentRow.classList.add('table-primary'); // O cualquier clase de Bootstrap para resaltar
+                    setTimeout(() => {
+                        studentRow.classList.remove('table-primary');
+                    }, 2000); // Quita el resaltado después de 2 segundos
+                }
+            }
+        });
+    </script>
+{% endblock %}
+{% endblock %}

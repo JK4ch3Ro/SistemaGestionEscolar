@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestionar Notas - {{ curso.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestionar Notas para {{ curso.nombre }}</h1>
+        <a href="{{ url_for('docente_bp.docente_dashboard') }}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+
+    <hr>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Curso: {{ curso.nombre }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            {% for b in range(1, 4) %} {# Asumiendo 3 bimestres, ajusta si tienes más/menos #}
+                            <th>Bim. {{ b }}</th>
+                            {% endfor %}
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estudiante in estudiantes %}
+                        <tr>
+                            <td>{{ estudiante.nombres }} {{ estudiante.apellidos }} ({{ estudiante.username }})</td>
+                            {% for b in range(1, 4) %}
+                            <td>
+                                <form action="{{ url_for('docente_bp.gestionar_nota') }}" method="POST" class="d-flex align-items-center">
+                                    <input type="hidden" name="estudiante_username" value="{{ estudiante.username }}">
+                                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                                    <input type="hidden" name="bimestre" value="{{ b }}">
+                                    <input type="number" name="valor" step="0.1" min="0" max="20" class="form-control form-control-sm me-2" style="width: 80px;" 
+                                           value="{{ estudiante.notas.get(b, '') }}">
+                                    <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                                </form>
+                            </td>
+                            {% endfor %}
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-info disabled" title="Funcionalidad no implementada">Ver Historial</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
